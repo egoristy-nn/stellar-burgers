@@ -13,15 +13,15 @@ export const BurgerConstructorElement: FC<BurgerConstructorElementProps> = memo(
     const dispatch = useDispatch();
 
     const handleMoveDown = () => {
-      dispatch(moveDown(ingredient._id));
+      dispatch(moveDown(ingredient.id));
     };
 
     const handleMoveUp = () => {
-      dispatch(moveUp(ingredient._id));
+      dispatch(moveUp(ingredient.id));
     };
 
     const handleClose = () => {
-      dispatch(removeIngredient(ingredient._id));
+      dispatch(removeIngredient(ingredient.id));
     };
 
     return (

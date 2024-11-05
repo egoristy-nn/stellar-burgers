@@ -9,9 +9,6 @@ import { fetchFeed } from '../../services/reducers/RootReducer';
 export const Feed: FC = () => {
   const dispatch = useDispatch();
   const [loading, setLoading] = useState(false);
-  useEffect(() => {
-    dispatch(fetchFeed());
-  }, [dispatch]);
 
   const orders: TOrder[] = useSelector(
     (state: RootState) => state.burger.feed.orders

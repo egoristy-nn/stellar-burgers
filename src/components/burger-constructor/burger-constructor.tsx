@@ -3,6 +3,7 @@ import { TConstructorIngredient } from '@utils-types';
 import { BurgerConstructorUI } from '@ui';
 import {
   ConstructorItem,
+  clearConstructor,
   closeModal,
   fetchOrder
 } from '../../services/reducers/RootReducer';
@@ -34,8 +35,8 @@ export const BurgerConstructor: FC = () => {
   );
   if (constructorItems.bun) {
     Ids.push(constructorItems.bun._id);
+    Ids.push(constructorItems.bun._id);
     ingredientsIds.forEach((id) => Ids.push(id));
-    console.log(Ids);
   }
 
   const onOrderClick = () => {
@@ -48,6 +49,7 @@ export const BurgerConstructor: FC = () => {
     }
 
     dispatch(fetchOrder(Ids));
+    dispatch(clearConstructor());
   };
   const closeOrderModal = () => {
     if (!orderRequest) {

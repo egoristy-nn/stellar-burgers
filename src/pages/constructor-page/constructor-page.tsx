@@ -9,10 +9,6 @@ import { useSelector } from 'react-redux';
 import { fetchIngredients } from '../../services/reducers/RootReducer';
 
 export const ConstructorPage: FC = () => {
-  const dispatch = useDispatch();
-  useEffect(() => {
-    dispatch(fetchIngredients());
-  }, []);
   const isIngredientsLoading = useSelector(
     (state: RootState) => state.burger.loading
   );

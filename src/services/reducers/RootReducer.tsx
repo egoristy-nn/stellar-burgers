@@ -2,18 +2,19 @@ import {
   getIngredientsApi,
   getFeedsApi,
   orderBurgerApi,
-  getOrdersApi
+  getOrdersApi,
+  getOrderByNumberApi
 } from '@api';
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import { TIngredient, TOrder } from '@utils-types';
+import { TConstructorIngredient, TIngredient, TOrder } from '@utils-types';
 
 interface BurgerState {
   ingredients: TIngredient[];
   loading: boolean;
   error: string | null;
   constructorItems: {
-    bun: TIngredient | null;
-    ingredients: TIngredient[];
+    bun: TConstructorIngredient | null;
+    ingredients: TConstructorIngredient[];
   };
   ingredientData: TIngredient[];
   orderRequest: boolean;
@@ -91,39 +92,47 @@ const burgerSlice = createSlice({
       state.constructorItems.bun = action.payload;
     },
     addIngredient: (state, action) => {
-      state.constructorItems.ingredients.push(action.payload);
+      const newIngredient: TConstructorIngredient = {
+        ...action.payload,
+        id: Date.now().toString()
+      };
+      state.constructorItems.ingredients.push(newIngredient);
     },
     removeIngredient: (state, action) => {
       state.constructorItems.ingredients =
         state.constructorItems.ingredients.filter(
-          (item) => item._id !== action.payload
+          (item) => item.id !== action.payload
         );
     },
     moveUp: (state, action) => {
-      const index = state.constructorItems.ingredients.findIndex(
-        (item) => item._id === action.payload
+      const currentIndex = state.constructorItems.ingredients.findIndex(
+        (item) => item.id === action.payload
       );
-      if (index > 0) {
-        const temp = state.constructorItems.ingredients[index];
-        state.constructorItems.ingredients[index] =
-          state.constructorItems.ingredients[index - 1];
-        state.constructorItems.ingredients[index - 1] = temp;
+      if (currentIndex > 0) {
+        const currentElement = state.constructorItems.ingredients[currentIndex];
+        const previousElement =
+          state.constructorItems.ingredients[currentIndex - 1];
+        state.constructorItems.ingredients[currentIndex] = previousElement;
+        state.constructorItems.ingredients[currentIndex - 1] = currentElement;
       }
     },
     moveDown: (state, action) => {
-      const index = state.constructorItems.ingredients.findIndex(
-        (item) => item._id === action.payload
+      const currentIndex = state.constructorItems.ingredients.findIndex(
+        (item) => item.id === action.payload
       );
-      if (index < state.constructorItems.ingredients.length - 1) {
-        const temp = state.constructorItems.ingredients[index];
-        state.constructorItems.ingredients[index] =
-          state.constructorItems.ingredients[index + 1];
-        state.constructorItems.ingredients[index + 1] = temp;
+      if (currentIndex < state.constructorItems.ingredients.length - 1) {
+        const currentElement = state.constructorItems.ingredients[currentIndex];
+        const nextElement =
+          state.constructorItems.ingredients[currentIndex + 1];
+        state.constructorItems.ingredients[currentIndex] = nextElement;
+        state.constructorItems.ingredients[currentIndex + 1] = currentElement;
       }
     },
-    closeModal: (state) => {
+    clearConstructor: (state) => {
       state.constructorItems.bun = null;
       state.constructorItems.ingredients = [];
+    },
+    closeModal: (state) => {
       state.isModalOpen = false;
       state.orderModalData = null;
       state.orderRequest = false;
@@ -175,7 +184,6 @@ const burgerSlice = createSlice({
         state.feed.totalToday = action.payload.totalToday;
         state.orderInfo = action.payload.orders;
         state.error = null;
-        console.log(state.feed.orders);
       })
       .addCase(fetchFeed.rejected, (state, action) => {
         state.loading = false;
@@ -207,5 +215,6 @@ export const {
   removeIngredient,
   moveUp,
   moveDown,
-  closeModal
+  closeModal,
+  clearConstructor
 } = burgerSlice.actions;

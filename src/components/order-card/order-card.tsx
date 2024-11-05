@@ -12,10 +12,6 @@ const maxIngredients = 6;
 
 export const OrderCard: FC<OrderCardProps> = memo(({ order }) => {
   const location = useLocation();
-  const dispatch = useDispatch();
-  useEffect(() => {
-    dispatch(fetchIngredients());
-  }, []);
   const ingredients: TIngredient[] = useSelector(
     (store: RootState) => store.burger.ingredients
   );

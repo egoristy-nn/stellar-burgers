@@ -21,7 +21,6 @@ export const OrderInfo: FC = () => {
     (state: RootState) => state.burger.ingredients
   );
 
-  /* Готовим данные для отображения */
   const orderInfo = useMemo(() => {
     if (!orderData || !ingredients.length) return null;
 
@@ -62,7 +61,6 @@ export const OrderInfo: FC = () => {
       total
     };
   }, [orderData, ingredients]);
-
   if (!orderInfo) {
     return <Preloader />;
   }

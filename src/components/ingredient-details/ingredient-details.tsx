@@ -10,7 +10,6 @@ export const IngredientDetails: FC = () => {
   const ingredientData = useSelector((state: RootState) =>
     state.burger.ingredientData.find((ingredient) => ingredient._id === id)
   );
-  console.log(ingredientData);
 
   if (!ingredientData) {
     return <Preloader />;
