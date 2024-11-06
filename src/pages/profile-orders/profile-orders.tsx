@@ -6,9 +6,10 @@ import { fetchMyOrders } from '../../services/reducers/RootReducer';
 
 export const ProfileOrders: FC = () => {
   const dispatch = useDispatch();
+
   useEffect(() => {
     dispatch(fetchMyOrders());
-  }, [dispatch]);
+  }, []);
   const orders: TOrder[] = useSelector(
     (state: RootState) => state.burger.myOrders
   );

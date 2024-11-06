@@ -13,8 +13,10 @@ export const OrderInfo: FC = () => {
   }, []);
   const { number } = useParams<{ number: string }>();
 
-  const orderData = useSelector((state: RootState) =>
-    state.burger.orderInfo.find((item) => item.number === Number(number))
+  const orderData = useSelector(
+    (state: RootState) =>
+      state.burger.orderInfo.find((item) => item.number === Number(number)) ||
+      state.burger.myOrders.find((item) => item.number === Number(number))
   );
 
   const ingredients: TIngredient[] = useSelector(

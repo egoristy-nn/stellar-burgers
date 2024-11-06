@@ -136,6 +136,9 @@ const burgerSlice = createSlice({
       state.isModalOpen = false;
       state.orderModalData = null;
       state.orderRequest = false;
+    },
+    setMyOrders: (state, action) => {
+      state.myOrders = action.payload;
     }
   },
   extraReducers: (builder) => {
