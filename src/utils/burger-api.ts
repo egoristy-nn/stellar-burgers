@@ -70,7 +70,7 @@ type TFeedsResponse = TServerResponse<{
 type TOrdersResponse = TServerResponse<{
   data: TOrder[];
 }>;
-
+//(не авторизован) получить список ингредиентов
 export const getIngredientsApi = () =>
   fetch(`${URL}/ingredients`)
     .then((res) => checkResponse<TIngredientsResponse>(res))
@@ -78,7 +78,7 @@ export const getIngredientsApi = () =>
       if (data?.success) return data.data;
       return Promise.reject(data);
     });
-
+//(не авторизован) получить ленту заказов
 export const getFeedsApi = () =>
   fetch(`${URL}/orders/all`)
     .then((res) => checkResponse<TFeedsResponse>(res))
@@ -86,7 +86,7 @@ export const getFeedsApi = () =>
       if (data?.success) return data;
       return Promise.reject(data);
     });
-
+//(авторизован) получить список своих заказов
 export const getOrdersApi = () =>
   fetchWithRefresh<TFeedsResponse>(`${URL}/orders`, {
     method: 'GET',
@@ -103,7 +103,7 @@ type TNewOrderResponse = TServerResponse<{
   order: TOrder;
   name: string;
 }>;
-
+//(авторизован) сделать заказ
 export const orderBurgerApi = (data: string[]) =>
   fetchWithRefresh<TNewOrderResponse>(`${URL}/orders`, {
     method: 'POST',
@@ -152,6 +152,10 @@ export const registerUserApi = (data: TRegisterData) =>
     body: JSON.stringify(data)
   })
     .then((res) => checkResponse<TAuthResponse>(res))
+    .catch((error) => {
+      console.error('Ошибка при регистрации:', error);
+      throw error;
+    })
     .then((data) => {
       if (data?.success) return data;
       return Promise.reject(data);

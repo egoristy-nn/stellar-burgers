@@ -1,23 +1,28 @@
-import { FC, useMemo } from 'react';
+import { FC, useEffect, useMemo } from 'react';
 import { Preloader } from '../ui/preloader';
 import { OrderInfoUI } from '../ui/order-info';
 import { TIngredient } from '@utils-types';
+import { RootState, useDispatch, useSelector } from '../../services/store';
+import { fetchIngredients } from '../../services/reducers/RootReducer';
+import { useParams } from 'react-router-dom';
 
 export const OrderInfo: FC = () => {
-  /** TODO: взять переменные orderData и ingredients из стора */
-  const orderData = {
-    createdAt: '',
-    ingredients: [],
-    _id: '',
-    status: '',
-    name: '',
-    updatedAt: 'string',
-    number: 0
-  };
+  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(fetchIngredients());
+  }, []);
+  const { number } = useParams<{ number: string }>();
 
-  const ingredients: TIngredient[] = [];
+  const orderData = useSelector(
+    (state: RootState) =>
+      state.burger.orderInfo.find((item) => item.number === Number(number)) ||
+      state.burger.myOrders.find((item) => item.number === Number(number))
+  );
 
-  /* Готовим данные для отображения */
+  const ingredients: TIngredient[] = useSelector(
+    (state: RootState) => state.burger.ingredients
+  );
+
   const orderInfo = useMemo(() => {
     if (!orderData || !ingredients.length) return null;
 
@@ -58,7 +63,6 @@ export const OrderInfo: FC = () => {
       total
     };
   }, [orderData, ingredients]);
-
   if (!orderInfo) {
     return <Preloader />;
   }
