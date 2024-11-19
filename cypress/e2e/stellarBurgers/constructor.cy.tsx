@@ -1,4 +1,10 @@
 /// <reference types="cypress" />
+const testUrl = 'http://localhost:4000/';
+const modalDataCy = '[data-cy=modal]';
+const constructorDataCy = '[data-cy=constructor]';
+const mainDataCy = '[data-cy=main]';
+const mainLinkDataCy = '[data-cy=link-main]';
+const constructorIngredientsDataCy = '[data-cy=constructor-ingredients]';
 
 describe('Тесты для страницы конструктора бургера', function() {
 
@@ -7,27 +13,27 @@ describe('Тесты для страницы конструктора бурге
       fixture: 'ingredients.json',
     }).as('getIngredients');
     cy.viewport(1300, 800);
-    cy.visit('http://localhost:4000/');
+    cy.visit(testUrl);
   })
   
   it('Добавление ингредиента в конструктор', function() {
     cy.wait('@getIngredients').its('response.body.data').should('have.length.gt', 0);
-    cy.get('[data-cy=main]').contains('Добавить').click({ force: true });
-    cy.get('[data-cy=constructor-ingredients]').within(() => {
+    cy.get(mainDataCy).contains('Добавить').click({ force: true });
+    cy.get(constructorIngredientsDataCy).within(() => {
       cy.contains('Биокотлета из марсианской Магнолии').should('exist');
     });
   })
 
   it('Открытие модального окна ингредиента', function() {
-    cy.get('[data-cy=link-main]').first().click({ force: true });
-    cy.get('[data-cy=modal]').should('be.visible');
+    cy.get(mainLinkDataCy).first().click({ force: true });
+    cy.get(modalDataCy).should('be.visible');
   })
 
   it('Закрытие модального окна ингредиента на крестик', function() {
-    cy.get('[data-cy=link-main]').first().click({ force: true });
-    cy.get('[data-cy=modal]').should('be.visible');
+    cy.get(mainLinkDataCy).first().click({ force: true });
+    cy.get(modalDataCy).should('be.visible');
     cy.get('[data-cy=modal-close]').click();
-    cy.get('[data-cy=modal]').should('not.exist');
+    cy.get(modalDataCy).should('not.exist');
   })
 });
 
@@ -54,7 +60,7 @@ describe('Тесты для создания заказа', function() {
     }).as('createOrder');
 
     cy.viewport(1300, 800);
-    cy.visit('http://localhost:4000/');
+    cy.visit(testUrl);
   });
 
   afterEach(() => {
@@ -78,10 +84,10 @@ describe('Тесты для создания заказа', function() {
       });
 
     // Добавляем ингредиент
-    cy.get('[data-cy=main]')
+    cy.get(mainDataCy)
       .contains('Добавить')
       .click({ force: true });
-    cy.get('[data-cy=constructor-ingredients]')
+    cy.get(constructorIngredientsDataCy)
       .within(() => {
         cy.contains('Биокотлета из марсианской Магнолии').should('exist');
       });
@@ -90,7 +96,7 @@ describe('Тесты для создания заказа', function() {
     cy.get('[data-cy=sauce]')
       .contains('Добавить')
       .click({ force: true });
-    cy.get('[data-cy=constructor-ingredients]')
+    cy.get(constructorIngredientsDataCy)
       .within(() => {
         cy.contains('Соус Spicy-X').should('exist');
       });
@@ -99,14 +105,14 @@ describe('Тесты для создания заказа', function() {
     cy.get('[data-cy=order-button]').click();
 
     //Проверка модального окна результата заказа
-    cy.get('[data-cy=modal]').should('be.visible');
+    cy.get(modalDataCy).should('be.visible');
     cy.get('[data-cy=order-number]').should('have.text', '1');
     cy.get('[data-cy=modal-close]').click();
-    cy.get('[data-cy=modal]').should('not.exist');
+    cy.get(modalDataCy).should('not.exist');
 
     //Проверка, что конструктор пуст
-    cy.get('[data-cy=constructor]').children().first().should('have.text', 'Выберите булки');
-    cy.get('[data-cy=constructor]').children().eq(1).should('have.text', 'Выберите начинку');
-    cy.get('[data-cy=constructor]').children().eq(2).should('have.text', 'Выберите булки');
+    cy.get(constructorDataCy).children().first().should('have.text', 'Выберите булки');
+    cy.get(constructorDataCy).children().eq(1).should('have.text', 'Выберите начинку');
+    cy.get(constructorDataCy).children().eq(2).should('have.text', 'Выберите булки');
   });
 });
