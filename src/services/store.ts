@@ -7,7 +7,7 @@ import {
 import { burgerReducer } from './reducers/RootReducer';
 import { userReducer } from './reducers/UserReducer';
 
-const rootReducer = combineReducers({
+export const rootReducer = combineReducers({
   burger: burgerReducer,
   user: userReducer
 });

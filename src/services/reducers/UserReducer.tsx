@@ -6,7 +6,7 @@ import {
   logoutApi,
   registerUserApi,
   updateUserApi
-} from '@api';
+} from '../../utils/burger-api';
 
 export function setCookie(
   name: string,
@@ -107,7 +107,7 @@ export const updateUser = createAsyncThunk(
   }
 );
 
-interface UserState {
+export interface UserState {
   isAuthChecked: boolean;
   isAuthorized: boolean;
   name: string;
@@ -210,8 +210,6 @@ const userSlice = createSlice({
         state.email = '';
         state.accessToken = '';
         state.refreshToken = '';
-        deleteCookie('accessToken');
-        deleteCookie('refreshToken');
       })
       .addCase(logoutUser.rejected, (state, action) => {
         state.loginUserRequest = false;
@@ -220,7 +218,7 @@ const userSlice = createSlice({
       });
 
     builder
-      .addCase(updateUser.pending, (state, action) => {
+      .addCase(updateUser.pending, (state) => {
         state.loginUserRequest = true;
         state.loginUserError = null;
       })

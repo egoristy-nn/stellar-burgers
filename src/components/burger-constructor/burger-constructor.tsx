@@ -47,7 +47,6 @@ export const BurgerConstructor: FC = () => {
       navigate('/login');
       return;
     }
-
     dispatch(fetchOrder(Ids));
     dispatch(clearConstructor());
   };

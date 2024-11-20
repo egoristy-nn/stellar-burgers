@@ -80,7 +80,7 @@ const App = () => {
 
   return (
     <>
-      <div className={styles.app}>
+      <div className={styles.app} data-cy='app'>
         <AppHeader />
         <Routes location={background || location}>
           <Route path='/' element={<ConstructorPage />} />

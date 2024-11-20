@@ -1,0 +1,26 @@
+{
+  "name": "Order 1",
+  "order": {
+    "createdAt": "2023-05-18T10:00:00.000Z",
+    "ingredients": [
+      "bun1-id",
+      "ingredient1-id",
+      "ingredient1-id",
+      "sause1-id",
+      "bun1-id"
+    ],
+    "name": "Order 1",
+    "number": 1,
+    "owner": {
+      "name": "user-name",
+      "email": "user-email",
+      "createdAt": "2023-05-18T10:00:00.000Z",
+      "updatedAt": "2023-05-18T10:00:00.000Z"
+    },
+    "price": 1000,
+    "status": "done",
+    "updatedAt": "2023-05-18T10:00:00.000Z",
+    "_id": "order1-id"
+  },
+  "success": true
+}

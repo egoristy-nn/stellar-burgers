@@ -4,11 +4,11 @@ import {
   orderBurgerApi,
   getOrdersApi,
   getOrderByNumberApi
-} from '@api';
+} from '../../utils/burger-api';
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { TConstructorIngredient, TIngredient, TOrder } from '@utils-types';
 
-interface BurgerState {
+export interface BurgerState {
   ingredients: TIngredient[];
   loading: boolean;
   error: string | null;
@@ -84,7 +84,7 @@ export const fetchMyOrders = createAsyncThunk(
   }
 );
 
-const burgerSlice = createSlice({
+export const burgerSlice = createSlice({
   name: 'burger',
   initialState,
   reducers: {
